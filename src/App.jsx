@@ -23,8 +23,9 @@ function App() {
   useEffect(() => {
     if (searchValue === "") return;
     (async () => {
-      const result = await fetchResults(searchValue);
-      setResults([result[0]]);
+      const fetchResult = await fetchResults(searchValue);
+      const result = fetchResult.map((el) => el.slice(0, searchValue.length));
+      setResults(result);
     })();
   }, [searchValue]);
 
