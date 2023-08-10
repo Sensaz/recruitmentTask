@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -21,12 +21,15 @@ function App() {
   };
 
   useEffect(() => {
-    if (searchValue === "") return;
-    (async () => {
+    if (searchValue === "") return setResults([]);
+    const delayDebounceFn = setTimeout(async () => {
       const fetchResult = await fetchResults(searchValue);
       const result = fetchResult.map((el) => el.slice(0, searchValue.length));
       setResults(result);
-    })();
+    }, 500);
+
+    (async () => {})();
+    return () => clearTimeout(delayDebounceFn);
   }, [searchValue]);
 
   return (
